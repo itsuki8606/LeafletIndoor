@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Condiitoner Indoor Map</title>
+
+    <link rel="stylesheet" href="leaflet.css" />
+
+    <!--[if lte IE 8]><link rel="stylesheet" href="libs/leaflet.ie.css" /><![endif]-->
+
+    <style type="text/css">
+        body {
+          padding: 0;
+          margin: 0;
+        }
+
+        html, body, #map {
+          height: 100%;
+        }
+
+        .info {
+            width: 150px;
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,1);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="jquery.min.js"></script>
+    <script src="leaflet-src.js"></script>
+    <script src="../leaflet-indoor.js"></script>
+    <script type="text/JavaScript">
+
+        // Create the map
+        var osmUrl = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osm = new L.TileLayer(osmUrl, {
+                maxZoom: 22,
+                attribution: "Map data &copy; OpenStreetMap contributors"
+            });
+
+        var map = new L.Map('map', {
+            layers: [osm],
+            center: new L.LatLng(22.924312, 120.286200),
+            zoom: 19
+        });
+		
+		setIndoorLayer = false;
+		setlevelControl = false;
+		//$(document).ready(function() {
+		function updateMap(data,now_level){
+			$.getJSON(data, function(geoJSON) {
+				if(setIndoorLayer){
+					map.removeLayer(indoorLayer);
+				}
+				if(setlevelControl){
+					levelControl.removeFrom(map);
+				}
+				indoorLayer = new L.Indoor(geoJSON, {
+					getLevel: function(feature) { 
+						if (feature.properties === 0)
+							return null;
+							return feature.properties.level;
+					},
+					onEachFeature: function(feature, layer) {
+						layer.bindPopup(JSON.stringify(feature.properties, null, 4));
+					},
+					style: function(feature) {
+						var fill = 'white';
+						
+						if (feature.properties.building_part === 'hall') {
+							fill = '#F0FFFF';
+						} else if (feature.properties.building_part === 'toilets') {
+							fill = '#87CEFA';
+						} else if (feature.properties.building_part === 'restaurant') {
+							fill = '#66CDAA';
+						} else if (feature.properties.building_part === 'information') {
+							fill = '#D3D3D3';
+						} else if (feature.properties.building_part === 'air_conditioner') {
+							switch (feature.properties.usage) {
+							case "true"://is using
+								fill = '#FF69B4'; //pink
+								break;
+							case "false":
+								fill = '#FFFFFF'; //white
+							}
+						}				
+						return {
+							fillColor: fill,
+							weight: 1,
+							color: '#666',
+							fillOpacity: 1
+						};
+					}
+				});
+				
+				indoorLayer.setLevel(now_level);
+				indoorLayer.addTo(map);
+				setIndoorLayer = true;
+					
+				levelControl = new L.Control.Level({
+					level: now_level,
+					levels: indoorLayer.getLevels()
+				});
+				
+				// Connect the level control to the indoor layer
+				levelControl.addEventListener("levelchange", indoorLayer.setLevel, indoorLayer);
+				
+				levelControl.addTo(map);
+				setlevelControl = true;
+			});	
+			if(data == "thsr-tn-1.json"){
+				data = "thsr-tn-2.json";
+			}else{
+				data = "thsr-tn-1.json";
+			}
+			//now_level = levelControl.options.level;
+			setTimeout(updateMap, 3000, data, now_level);
+		}
+		updateMap("thsr-tn-1.json","1");		
+		
+
+    </script>
+</body>
+</html>
