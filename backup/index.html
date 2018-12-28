@@ -107,18 +107,21 @@
 					levels: indoorLayer.getLevels()
 				});
 				
+				//console.log(now_level)
 				// Connect the level control to the indoor layer
 				levelControl.addEventListener("levelchange", indoorLayer.setLevel, indoorLayer);
-				
+				now_level = levelControl.options.level;
+				console.log(now_level);
 				levelControl.addTo(map);
 				setlevelControl = true;
 			});	
+			console.log('one')
 			if(data == "thsr-tn-1.json"){
 				data = "thsr-tn-2.json";
 			}else{
 				data = "thsr-tn-1.json";
 			}
-			//now_level = levelControl.options.level;
+			//console.log(now_level);
 			setTimeout(updateMap, 3000, data, now_level);
 		}
 		updateMap("thsr-tn-1.json","1");		
