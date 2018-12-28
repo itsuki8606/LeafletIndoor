@@ -4,6 +4,6 @@
 ### Step2. 使用JOSM編輯tag
 ### Step2. 匯出成json檔
 ### Step3. 使用Leaflet及[Leaflet Indoor plugin](https://github.com/cbaines/leaflet-indoor)建構web版室內地圖
-### Step4. 模擬使用NILM的方法分隔電器，冷氣顏色隨使用狀況改變 → [DEMO](http://geomatics-ncku107.lionfree.net/Test/leaflet-indoor/examples/)
+### Step4. 模擬使用NILM的方法分隔電器，冷氣顏色隨使用狀況改變 → [DEMO](https://itsuki8606.github.io/LeafletIndoor/)
 粉色為使用中，白色為閒置中，目前為每三秒變換一次。
 ![demo](https://i.imgur.com/EcTnX2d.png)
