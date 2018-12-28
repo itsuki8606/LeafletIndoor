@@ -455,6 +455,7 @@
             "type": "Feature",
             "properties": {
                 "amenity": "toilets",
+				"name": "廁所",
                 "access": "yes",
                 "female": "yes",
                 "male": "yes",
@@ -772,6 +773,7 @@
             "properties": {
                 "access": "yes",
                 "amenity": "toilets",
+				"name": "廁所",
                 "building_part": "toilets",
                 "fee": "no",
                 "female": "yes",
@@ -820,6 +822,7 @@
             "properties": {
                 "access": "yes",
                 "amenity": "toilets",
+				"name": "廁所",
                 "building_part": "toilets",
                 "fee": "no",
                 "female": "yes",

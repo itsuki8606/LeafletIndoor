@@ -67,7 +67,7 @@
 							return feature.properties.level;
 					},
 					onEachFeature: function(feature, layer) {
-						layer.bindPopup(JSON.stringify(feature.properties, null, 4));
+						layer.bindPopup(JSON.stringify(feature.properties.name, null, 4));
 					},
 					style: function(feature) {
 						var fill = 'white';
